@@ -31,6 +31,7 @@ import RecoveryHint from '../components/RecoveryHint.jsx'
 import { ChallengesCard } from '../components/Challenges.jsx'
 import { isOn } from '../lib/modules.js'
 import WeekCard from '../components/WeekCard.jsx'
+import TodayDone from '../components/TodayDone.jsx'
 
 // Home = what to do now + a quick glance. Deep charts & history live in Stats.
 export default function Home() {
@@ -178,6 +179,8 @@ export default function Home() {
           : routine ? <span className="row" style={{ gap: 8 }}><MiniBodyMap routines={todayRoutines} body={S.body} /><span className="tag acc">{t('Start')}</span></span>
           : <Icon name="plus" className="chev" />}
       </div>
+      {/* Every workout and sport logged today, each with its time (components/TodayDone.jsx). */}
+      <TodayDone S={S} />
       {/* The row above starts today's plan in one tap, and so does the Start button in the tab
           bar — which is the whole problem when you want something else. Both jump straight into
           the planned session whenever there is one, so the Start screen (a freestyle session,
