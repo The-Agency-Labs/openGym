@@ -66,8 +66,11 @@ export function equipmentOf(list) {
 }
 
 // Kinds of exercise (catalogue "category") present in a list, in a fixed order that reads from
-// lifting to everything around it. Custom exercises carry none and only show under "Any type".
-export const CATEGORIES = ['strength', 'calisthenics', 'olympic', 'plyometrics', 'isometric', 'cardio', 'stretching', 'mobility', 'yoga', 'pilates', 'combat', 'rehab']
+// lifting to everything around it. A custom exercise carries none unless its owner marks it
+// 'sports' (components/SportsSheet.jsx): time only, a consistency metric. The catalogue has no
+// sports of its own, so 'sports' only ever holds custom exercises.
+export const SPORTS = 'sports'
+export const CATEGORIES = ['strength', 'calisthenics', 'olympic', 'plyometrics', 'isometric', 'cardio', 'stretching', 'mobility', 'yoga', 'pilates', 'combat', SPORTS, 'rehab']
 export function categoriesOf(list) {
   const have = new Set(list.map(e => e.cat).filter(Boolean))
   return CATEGORIES.filter(c => have.has(c))
