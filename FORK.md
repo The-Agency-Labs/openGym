@@ -4,12 +4,16 @@ What this fork changes from upstream (DuarteSantos8/openGym), and why. One entry
 
 ## Sports type for your own exercises (2026-11-11)
 
-What: a Sports value in the exercise Type filter (Library and picker). In the Library, "Mark your
-exercises as Sports" opens a sheet where each of your own exercises is switched to Sports or back.
-The mark is the exercise's own `cat`, so it syncs like any edit of a custom exercise.
+What: a Sports value in the exercise Type filter (Library and picker). Sports is also a chip in the top
+row of the custom exercise form, beside Cardio, Back and the rest (2026-11-12): picked, it hides the
+equipment and muscle rows and the exercise logs time only. The mark is the exercise's own `cat`, so it
+syncs like any edit of a custom exercise, and an exercise already marked Sports opens with the chip on.
+The Library's old "Mark your exercises as Sports" row is gone.
 Why: sports are tracked as time only, a consistency metric, and need their own filter.
-Files: `frontend/src/lib/exercises.js` (SPORTS, CATEGORIES), `frontend/src/views/Library.jsx` (one row,
-one import), `frontend/src/components/SportsSheet.jsx`, `frontend/src/components/SportsSheet.test.jsx`.
+Files: `frontend/src/lib/exercises.js` (SPORTS, CATEGORIES), `frontend/src/sheets.jsx` (the chip, in
+`CustomExForm`), `frontend/src/views/Library.jsx` (the old row and its import removed),
+`frontend/src/sheets.sports-chip.test.jsx`. `frontend/src/components/SportsSheet.jsx` and its test are no
+longer used by the app; the change tool cannot delete files, so `git rm` them by hand.
 Note: the new words are plain English, not in the locale packs (too large for a pull request).
 
 ## Week card on Home (2026-11-11)
@@ -47,7 +51,6 @@ Files: `frontend/src/lib/preloaded-sports.js` (the names, the one home), `fronte
 `frontend/src/lib/history.js`, `frontend/src/lib/week-card.js`, `frontend/src/views/Workout.jsx`,
 `frontend/src/views/FocusView.jsx` (each a few lines), and tests: `preloaded-sports.test.js`,
 `Workout.sport.test.jsx`, `SportsSheet.test.jsx` (the Sports filter is now always offered).
-Note: the new words are plain English, not in the locale packs. Not done yet: the Sports chip in the
-custom exercise form (it lives in `sheets.jsx`, over the size limit for a pull request), so the
-Library's "Mark your exercises as Sports" list stays. The "Suggest a fix" link in the exercise sheet
-also still shows for a preloaded sport.
+The exercise sheet of a preloaded sport has no "Suggest a fix" link (`sheets.jsx`: it is this fork's own,
+not the catalogue's).
+Note: the new words are plain English, not in the locale packs.
