@@ -21,3 +21,13 @@ Why: see the whole week, sports and lifts together, as a consistency check.
 Files: `frontend/src/lib/week-card.js`, `frontend/src/components/WeekCard.jsx` (and their tests),
 `frontend/src/views/Home.jsx` (one import, one line).
 Note: the new words are plain English, not in the locale packs (too large for a pull request).
+
+## Everything done today, on Home (2026-11-11)
+
+What: under the Today row, one line for every workout logged today (not only the last one), each with
+the time it started and how long it took, and the sports inside it with their own time. Nothing shows
+on a day with no workout. "Choose a different workout" stays.
+Why: the Today row named only the last workout, so a second one logged the same day looked missing.
+Files: `frontend/src/components/TodayDone.jsx`, `frontend/src/views/Home.today-done.test.jsx`,
+`frontend/src/views/Home.jsx` (one import, one line). Numbers come from `lib/week-card.js`.
+Note: the new words are plain English, not in the locale packs (too large for a pull request).
