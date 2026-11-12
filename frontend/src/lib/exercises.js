@@ -68,8 +68,9 @@ export function equipmentOf(list) {
 
 // Kinds of exercise (catalogue "category") present in a list, in a fixed order that reads from
 // lifting to everything around it. A custom exercise carries none unless its owner marks it
-// 'sports' (components/SportsSheet.jsx): time only, a consistency metric. The catalogue has no
-// sports of its own: 'sports' holds custom exercises and the preloaded ones below.
+// 'sports' (the Sports chip of the custom exercise form, in sheets.jsx): time only, a consistency
+// metric. The catalogue has no sports of its own: 'sports' holds custom exercises and the preloaded
+// ones below.
 export const SPORTS = 'sports'
 // The sports that come with the app (lib/preloaded-sports.js). Looked up by id like any exercise
 // (so a workout that logged one still reads), listed by allExercises, and never in `customEx`: not

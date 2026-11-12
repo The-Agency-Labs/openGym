@@ -10,7 +10,6 @@ import { fmtNum, exCount } from '../lib/format.js'
 import { t, tn, exerciseNameFor, exerciseNameClass } from '../lib/i18n.js'
 import { Thumb } from '../components/Media.jsx'
 import { exerciseDetailSheet, addToRoutineSheet, customExSheet } from '../sheets.jsx'
-import SportsSheet from '../components/SportsSheet.jsx'
 import Icon from '../components/Icon.jsx'
 import ExerciseViewToggle from '../components/ExerciseViewToggle.jsx'
 import { Button } from '../components/ui.jsx'
@@ -122,10 +121,6 @@ export default function Library() {
         <div className="thumb thumb-x"><Icon name="plusCircle" /></div>
         <div className="grow"><div className="tt">{t('Create your own exercise')}</div><div className="ss">{t('name + body part, and a photo or video if you like')}</div></div><Icon name="plus" className="chev" />
       </div>
-      {ownCount > 0 && <div className="item" {...tappable(() => useUI.getState().openSheet(close => <SportsSheet close={close} />))}>
-        <div className="thumb thumb-x"><Icon name="figureRun" /></div>
-        <div className="grow"><div className="tt">Mark your exercises as Sports</div><div className="ss">Sports track time only, and get their own type</div></div><Icon name="slider" className="chev" />
-      </div>}
       {f.slice(0, shown).map(row)}
       {f.length === 0 && !similar.length && <div className="empty"><div className="ico"><Icon name="magnifier" /></div>{t('No match')}</div>}
       {similar.length > 0 && <h4 className="sec similar-label">{f.length ? t('Similar exercises') : t('No exact match. These come close:')}</h4>}
