@@ -47,15 +47,17 @@ describe('SportsSheet', () => {
 })
 
 describe('the Sports type in the filter', () => {
-  it('is offered only once something is marked, and narrows to the marked ones', () => {
+  it('is always offered, and narrows to the marked ones and the preloaded sports', () => {
     const S = useStore.getState().S
     expect(CATEGORIES).toContain(SPORTS)
-    expect(categoriesOf(allExercises(S))).not.toContain(SPORTS)
+    expect(categoriesOf(allExercises(S))).toContain(SPORTS)
+    expect(byCategory(allExercises(S), SPORTS).list.every(e => e.preloaded)).toBe(true)
     const marked = { ...S, customEx: [{ ...S.customEx[0], cat: SPORTS }, S.customEx[1]] }
     const all = allExercises(marked)
     expect(categoriesOf(all)).toContain(SPORTS)
     const { on, list } = byCategory(all, SPORTS)
     expect(on).toBe(SPORTS)
-    expect(list.map(e => e.id)).toEqual(['cx1'])
+    expect(list.map(e => e.id)[0]).toBe('cx1')
+    expect(list.slice(1).every(e => e.preloaded)).toBe(true)
   })
 })
