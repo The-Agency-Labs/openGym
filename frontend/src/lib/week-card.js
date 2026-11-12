@@ -1,7 +1,7 @@
 // The week card on Home: every workout of one week, a day at a time, and the week's totals.
 // Pure, so it is tested without a screen. A sport is one of your own exercises marked Sports
-// (exercises.js SPORTS): it counts time only, never sets or volume.
-import { SPORTS } from './exercises.js'
+// (exercises.js SPORTS), or one that comes with the app (PRELOADED_SPORTS): it counts time only, never sets or volume.
+import { SPORTS, PRELOADED_SPORTS } from './exercises.js'
 import { entryTimes } from './exercise-time.js'
 import { completedVolumeOf, hasCompletedWork, isWarmupRow } from './workout-model.js'
 
@@ -40,9 +40,9 @@ function rowFor(w, sportIds, own) {
 
 /** `{ days: [{ iso, dow, day, workouts }], total: { workouts, ms, sets } }` for the 7 days from startISO. */
 export function weekCard(S, startISO) {
-  const customEx = listOf(S?.customEx).filter(c => c && c.cat === SPORTS)
-  const sportIds = new Set(customEx.map(c => c.id))
-  const own = new Map(customEx.map(c => [c.id, c.n]))
+  const sportEx = [...PRELOADED_SPORTS, ...listOf(S?.customEx).filter(c => c && c.cat === SPORTS)]
+  const sportIds = new Set(sportEx.map(c => c.id))
+  const own = new Map(sportEx.map(c => [c.id, c.n]))
   const all = listOf(S?.workouts).filter(Boolean)
   const days = []
   const total = { workouts: 0, ms: 0, sets: 0 }

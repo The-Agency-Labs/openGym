@@ -31,3 +31,23 @@ Why: the Today row named only the last workout, so a second one logged the same 
 Files: `frontend/src/components/TodayDone.jsx`, `frontend/src/views/Home.today-done.test.jsx`,
 `frontend/src/views/Home.jsx` (one import, one line). Numbers come from `lib/week-card.js`.
 Note: the new words are plain English, not in the locale packs (too large for a pull request).
+
+## Preloaded sports (2026-11-12)
+
+What: thirteen sports come with the app (pickleball, spikeball, swimming, basketball, volleyball, tennis,
+badminton, soccer, hockey, golf, hiking, climbing, cycling). Each is a Sports exercise, listed after the
+catalogue and found by the Sports filter. They log minutes only: no speed or distance, in the list, the
+focus view, the routine line and the history. They count on the week and Today cards.
+Built in, not saved to your data: never synced, not copied into your exercises, cannot be renamed or
+deleted. An exercise of yours with the same name hides the built-in one ("Volleyball Runs" is a
+different name, so it stays). The catalogue's own Swimming steps aside in lists so there is one;
+a workout that logged it still reads.
+Why: nobody should have to add the common sports by hand.
+Files: `frontend/src/lib/preloaded-sports.js` (the names, the one home), `frontend/src/lib/exercises.js`,
+`frontend/src/lib/history.js`, `frontend/src/lib/week-card.js`, `frontend/src/views/Workout.jsx`,
+`frontend/src/views/FocusView.jsx` (each a few lines), and tests: `preloaded-sports.test.js`,
+`Workout.sport.test.jsx`, `SportsSheet.test.jsx` (the Sports filter is now always offered).
+Note: the new words are plain English, not in the locale packs. Not done yet: the Sports chip in the
+custom exercise form (it lives in `sheets.jsx`, over the size limit for a pull request), so the
+Library's "Mark your exercises as Sports" list stays. The "Suggest a fix" link in the exercise sheet
+also still shows for a preloaded sport.

@@ -3,6 +3,7 @@ import MUSCLE_MAP from './exercise-muscle-map.json' with { type: 'json' }
 import V13_IDS from './catalogue-v13-ids.json' with { type: 'json' }
 import { t, getVersion, exerciseNameSearchText } from './i18n-core.js'
 import { exerciseAliases, aliasSnapshot } from './exercise-aliases.js'
+import { PRELOADED_SPORT_NAMES } from './preloaded-sports.js'
 
 export { EXDB }
 
@@ -68,8 +69,19 @@ export function equipmentOf(list) {
 // Kinds of exercise (catalogue "category") present in a list, in a fixed order that reads from
 // lifting to everything around it. A custom exercise carries none unless its owner marks it
 // 'sports' (components/SportsSheet.jsx): time only, a consistency metric. The catalogue has no
-// sports of its own, so 'sports' only ever holds custom exercises.
+// sports of its own: 'sports' holds custom exercises and the preloaded ones below.
 export const SPORTS = 'sports'
+// The sports that come with the app (lib/preloaded-sports.js). Looked up by id like any exercise
+// (so a workout that logged one still reads), listed by allExercises, and never in `customEx`: not
+// saved, not synced, not editable. Not `custom`, so isCustomEx is false for them.
+export const PRELOADED_SPORTS = PRELOADED_SPORT_NAMES.map(n => ({
+  id: 'sport-' + n.toLowerCase().replace(/\s+/g, '-'), n, bp: 'cardio', eq: '', tg: '', sm: [], st: [], cat: SPORTS, preloaded: true,
+}))
+PRELOADED_SPORTS.forEach(e => { EXIDX[e.id] = e })
+// The catalogue's own exercise of the same name (swimming) steps aside in lists, so a sport is never
+// listed twice; its id still resolves, so a workout that logged it still reads.
+const SPORT_NAMES = new Set(PRELOADED_SPORTS.map(e => e.n.toLowerCase()))
+const CATALOGUE_LISTED = CATALOGUE.filter(e => !SPORT_NAMES.has(String(e.n).toLowerCase()))
 export const CATEGORIES = ['strength', 'calisthenics', 'olympic', 'plyometrics', 'isometric', 'cardio', 'stretching', 'mobility', 'yoga', 'pilates', 'combat', SPORTS, 'rehab']
 export function categoriesOf(list) {
   const have = new Set(list.map(e => e.cat).filter(Boolean))
@@ -128,7 +140,9 @@ export function healCustomEx(list) {
 // Every exercise you can pick: yours, then the catalogue's, less any merged into another (#656,
 // lib/exercise-merge.js): a catalogue exercise cannot be removed, so a merge hides it instead.
 export const allExercises = st => {
-  const all = [...(st?.customEx || []), ...CATALOGUE]
+  const mine = st?.customEx || []
+  const named = new Set(mine.map(c => String(c?.n || '').trim().toLowerCase()))
+  const all = [...mine, ...CATALOGUE_LISTED, ...PRELOADED_SPORTS.filter(e => !named.has(e.n.toLowerCase()))]
   const m = st?.exMerged
   if (!m || typeof m !== 'object') return all
   const away = new Set(Object.keys(m).filter(k => m[k] && m[k].into))
@@ -218,7 +232,9 @@ export const isVideoSrc = src => /\.(mp4|webm)(\?|$)/i.test(src || '')
 export const exerciseOf = idOrEx => (typeof idOrEx === 'string' ? EXIDX[idOrEx] : idOrEx)
 
 // Cardio exercises log time + speed instead of weight × reps.
-export const isCardio = idOrEx => exerciseOf(idOrEx)?.bp === 'cardio'
+export const isCardio = idOrEx => { const ex = exerciseOf(idOrEx); return ex?.bp === 'cardio' || ex?.cat === SPORTS }
+// A sport logs its time and nothing else: no speed, no distance.
+export const isSport = idOrEx => exerciseOf(idOrEx)?.cat === SPORTS
 
 // Static holds (planks, wall sits, levers, hangs): the catalogue marks the exercises that are only
 // ever held ("hold": true), so a freshly added one starts as a timed hold rather than as reps.
